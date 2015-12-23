@@ -9,27 +9,27 @@
 				<h2 class="font-size-26 color-white font-weight-300 font-open-sans">Voici la liste des jeux</h2>
 			</div>
 		</section>
-		
-				
+
 		<section class="bg-grey-100 padding-top-60 padding-bottom-60 relative">
-			<div class="container">
+		<div class="container">
+		@foreach ($games as $game)			
 				<div class="row">
 					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 						<div class="entry-post">
 							<div class="thumb">
-								<img src="holder.js/460x215" alt="">
+								<img src="{{ $game->header_image }}" alt="">
 								<div class="thumb-info"><span class="label label-warning">Steam key</span></div>
 								<div class="thumb-nav"><a href="games-single.html"><i class="fa fa-heart-o"></i> <span>15</span></a></div>
 							</div>
 							<div class="caption">
-								<h3 class="main-title"><a href="games-single.html">Alien Isolation Remastered</a></h3>
-								<p class="margin-bottom-20">Aliquam imperdiet augue dui, non fermentum dolor aliquam in. Nunc molestie nunc...</p>
-								<a href="games-single.html" class="btn btn-block btn-primary">View Game</a>
+								<h3 class="main-title"><a href="games-single.html">{{ $game->name }}</a></h3>
+								<p class="margin-bottom-20">{{ strip_tags(str_limit($game->detailed_description, $limit = 150, $end = ' [...]')) }}</p>
+								<a href="games-single.html" class="btn btn-block btn-primary">Fiche du jeu & offres</a>
 							</div>
 						</div>
 					</div>
-							
-					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+		@endforeach	
+<!-- 					<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 						<div class="entry-post">
 							<div class="thumb">
 								<img src="holder.js/460x215" alt="">
@@ -102,10 +102,11 @@
 								<a href="games-single.html" class="btn btn-block btn-primary">View Game</a>
 							</div>
 						</div>
-					</div>	
+					</div> -->
+
 				</div>
 				
-				<div class="text-center"><a href="games.html" class="btn btn-primary btn-lg btn-shadow btn-rounded margin-top-10 margin-bottom-20">Show More <i class="fa fa-angle-right margin-left-10"></i></a></div>
+				<div class="text-center"><a href="games.html" class="btn btn-primary btn-lg btn-shadow btn-rounded margin-top-10 margin-bottom-20">Voir plus <i class="fa fa-angle-right margin-left-10"></i></a></div>
 			</div>
 		</section>
 					

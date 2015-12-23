@@ -9,26 +9,27 @@
 	<title>Keymarket</title>
 	
 	<!-- FAVICON -->
-	<link rel="shortcut icon" href="img/favicon.ico">
+	<link rel="shortcut icon" href="/img/favicon.ico">
 	
 	<!-- CORE CSS -->
-	<link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
-	<link href="css/helpers.css" rel="stylesheet">
+	<link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/style.css" rel="stylesheet">
+	<link href="/css/helpers.css" rel="stylesheet">
 	
 	<!-- PLUGINS -->
-	<link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-	<link href="plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
-	<link href="plugins/animate/animate.min.css" rel="stylesheet">
-	<link href="plugins/animate/animate.delay.css" rel="stylesheet">
-	<link href="plugins/owl-carousel/owl.carousel.css" rel="stylesheet">
+	<link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/plugins/ionicons/css/ionicons.min.css" rel="stylesheet">
+	<link href="/plugins/animate/animate.min.css" rel="stylesheet">
+	<link href="/plugins/animate/animate.delay.css" rel="stylesheet">
+	<link href="/plugins/owl-carousel/owl.carousel.css" rel="stylesheet">
 </head>
 
 <body class="header-fixed">
+
 	<header>
 		<div class="container">
 		<span class="bar hide"></span>
-		<a href="index.html" class="logo"><img src="img/logo.png" alt=""></a>
+		<a href="index.html" class="logo"><img src="/img/logo.png" alt=""></a>
 		<nav>
 			<div class="nav-control">
 				<ul>
@@ -42,17 +43,31 @@
 				</div>
 			</nav>
 			<div class="nav-right">
+
+			@if (Auth::guest())
+			<a href="/auth/register"><i class="fa fa-btn fa-heart"></i> Inscription</a>
+			<a href="/auth/login"><i class="fa fa-btn fa-sign-in"></i> Connexion</a>
+			@else
 				<div class="nav-profile">
-					<a href="#" id="nav-profile" class="profile dropdown-toggle" data-toggle="dropdown"><img src="img/user/avatar.jpg" alt=""> <span>Nathan Drake</span></a>
+					<a href="#" id="nav-profile" class="profile dropdown-toggle" data-toggle="dropdown">
+
+					@if (Auth::user()->avatar)
+					<img src="{{ Auth::user()->avatar }}" alt="">
+					@else
+					<img src="/img/user/avatar.jpg" alt=""> 
+					@endif
+					
+					<span>{{ Auth::user()->name }}</span></a>
 					<ul class="dropdown-menu" aria-labelledby="nav-profile">
 						<li><a href="#"><i class="fa fa-user"></i> Profil</a></li>
 						<li><a href="#"><i class="fa fa-heart"></i> Wanted <span class="label label-info pull-right">32</span></a></li>
 						<li><a href="#"><i class="fa fa-gamepad"></i> En ma possession</a></li>
 						<li><a href="#"><i class="fa fa-gear"></i> Paramètres</a></li>
 						<li class="divider"></li>
-						<li><a href="#"><i class="fa fa-sign-out"></i> Déconnexion</a></li>
+						<li><a href="/auth/logout"><i class="fa fa-sign-out"></i> Déconnexion</a></li>
 					</ul>
 				</div>
+			
 				<div class="nav-likes">
 					<a href="#" id="nav-likes" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-heart"></i></a>
 					<ul class="dropdown-menu" aria-labelledby="nav-likes">
@@ -65,6 +80,9 @@
 						<li class="dropdown-footer"><a href="#">Tout voir</a></li>
 					</ul>
 				</div>
+
+				@endif
+
 				<a href="#" data-toggle="modal-search"><i class="fa fa-search"></i></a>
 			</div>
 		</div>
@@ -166,6 +184,10 @@
 	</div><!-- /.modal --> 
 	
 	<!-- Javascript -->
+
+	<!-- FACEBOOK -->
+	<script src="{{ URL::asset('js/facebook.js') }}"></script>
+
 	<script src="plugins/jquery/jquery-1.11.1.min.js"></script>
 	<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
 	<script src="plugins/core.js"></script>
