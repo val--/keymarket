@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+
 <!-- Content -->
 	<div id="wrapper">	
 		

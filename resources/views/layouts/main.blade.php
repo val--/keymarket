@@ -45,8 +45,7 @@
 			<div class="nav-right">
 
 			@if (Auth::guest())
-			<a href="/auth/register"><i class="fa fa-btn fa-heart"></i> Inscription</a>
-			<a href="/auth/login"><i class="fa fa-btn fa-sign-in"></i> Connexion</a>
+			<a id="modal_trigger" href="#login" ><i class="fa fa-btn fa-sign-in"></i> Connexion / Inscription</a>
 			@else
 				<div class="nav-profile">
 					<a href="#" id="nav-profile" class="profile dropdown-toggle" data-toggle="dropdown">
@@ -95,6 +94,106 @@
 			<i class="fa fa-times close"></i>
 		</div>
 	</div><!-- /search -->
+
+		<div id="login" class="popupContainer" style="display:none;">
+				<div class="popupHeader">
+						<span class="header_title">Connexion</span>
+						<span class="modal_close"><i class="fa fa-times"></i></span>
+				</div>
+
+				<section class="popupBody">
+						<!-- Social Login -->
+						<div class="social_login">
+								<div class="">
+										<a href="/facebook-connect" class="social_box fb">
+												<span class="icon"><i class="fa fa-facebook"></i></span>
+												<span class="icon_title">Connexion Facebook</span>
+
+										</a>
+
+										<a href="#" class="social_box steam">
+												<span class="icon"><i class="fa fa-steam-square"></i></span>
+												<span class="icon_title">Connexion Steam (à venir)</span>
+										</a>
+								</div>
+
+								<div class="centeredText">
+										<span>Je préfère utiliser mon adresse e-mail :</span>
+								</div>
+
+								<div class="action_btns">
+										<div class="one_half"><a href="#" id="login_form" class="btn">Connexion</a></div>
+										<div class="one_half last"><a href="#" id="register_form" class="btn">Inscription</a></div>
+								</div>
+						</div>
+
+						<!-- Username & Password Login form -->
+						<div class="user_login">
+								<form action="/auth/login" method="POST">
+								{{ csrf_field() }}
+										<label for="email">E-mail</label>
+										<input type="email" name="email" class="form-control connexion_email" value="{{ old('email') }}">
+										<br />
+
+										<label for="password">Mot de passe</label>
+										<input type="password" name="password" class="form-control connexion_password">
+										<br />
+
+										<div class="checkbox">
+												<input id="remember" type="checkbox" />
+												<label for="remember">Se souvenir de moi</label>
+										</div>
+
+										<div class="action_btns">
+												<div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i> Précédent</a></div>
+												<div class="one_half last">
+												<button type="submit" class="btn btn-default connexion">
+													<i class="fa fa-btn fa-sign-in"></i> Connexion
+												</button></div>
+										</div>
+								</form>
+
+								<a href="#" class="forgot_password">Mot de passe oublié ?</a>
+						</div>
+
+						<!-- Register Form -->
+						<div class="user_register">
+						@include('common.errors')
+								<form action="/auth/register" method="POST">
+								{{ csrf_field() }}
+										<label for="name">Pseudo</label>
+										<input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+										<br />
+
+										<label for="email">Adresse e-mail</label>
+										<input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+										<br />
+
+										<label for="password">Mot de passe</label>
+										<input type="password" name="password" class="form-control password" required>
+										<br />
+
+										<label for="password_confirmation">Mot de passe (confirmation)</label>
+										<input type="password" name="password_confirmation" class="form-control password_confirmation" required>
+										<br />
+
+										<div class="checkbox">
+												<input id="send_updates" type="checkbox" />
+												<label for="send_updates">Test</label>
+										</div>
+
+										<div class="action_btns">
+												<div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i> Précédent</a></div>
+												<div class="one_half last">								
+												<button type="submit" class="btn btn-default inscription">
+												<i class="fa fa-btn fa-sign-in"></i> Inscription
+												</button>
+								</div>
+										</div>
+								</form>
+						</div>
+				</section>
+		</div>
 
 	@yield('content')
 
@@ -188,11 +287,71 @@
 	<!-- FACEBOOK -->
 	<script src="{{ URL::asset('js/facebook.js') }}"></script>
 
-	<script src="plugins/jquery/jquery-1.11.1.min.js"></script>
-	<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-	<script src="plugins/core.js"></script>
-	<script src="plugins/owl-carousel/owl.carousel.min.js"></script>
+	<script src="{{ URL::asset('plugins/jquery/jquery-1.11.1.min.js') }}"></script>
+	<script src="{{ URL::asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+	<script src="{{ URL::asset('plugins/core.js') }}"></script>
+	<script src="{{ URL::asset('plugins/owl-carousel/owl.carousel.min.js') }}"></script>
+	<script src="{{ URL::asset('plugins/leanmodal/jquery.leanModal.min.js') }}"></script>
+
+
 	<script>
+	$( document ).ready(function() {
+		console.log("coucou");
+
+		$('.inscription').prop('disabled', true);
+		$('.connexion').prop('disabled', true);
+
+		$('.password_confirmation').keyup(function() {
+        if($(this).val() == $('.password').val()) {
+        	$('.inscription').prop('disabled', false);
+        }else{
+        	$('.inscription').prop('disabled', true);
+        }
+     	});
+
+     	$('.connexion_password').keyup(function() {
+        if($(this).val() != '' && $('.connexion_email').val() != '') {
+        	$('.connexion').prop('disabled', false);
+        }else{
+        	$('.connexion').prop('disabled', true);
+        }
+     	});
+
+
+		    // Plugin options and our code
+		$("#modal_trigger").leanModal({
+				top: 100,
+				overlay: 0.6,
+				closeButton: ".modal_close"
+		});
+
+		$(function() {
+				// Calling Login Form
+				$("#login_form").click(function() {
+						$(".social_login").hide();
+						$(".user_login").show();
+						return false;
+				});
+
+				// Calling Register Form
+				$("#register_form").click(function() {
+						$(".social_login").hide();
+						$(".user_register").show();
+						$(".header_title").text('Inscription');
+						return false;
+				});
+
+				// Going back to Social Forms
+				$(".back_btn").click(function() {
+						$(".user_login").hide();
+						$(".user_register").hide();
+						$(".social_login").show();
+						$(".header_title").text('Connexion');
+						return false;
+				});
+		});
+
+	});
 	(function($) {
 	"use strict";
 		var owl = $(".owl-carousel");
